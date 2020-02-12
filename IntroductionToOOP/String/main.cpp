@@ -35,32 +35,32 @@ public:
 		this->str = new char[size] {};
 		std::cout << "DefaultConstruct:" << this << std::endl;
 	}*/
-	String(int size = 80)
+	explicit String(int size = 80) :size(size), str(new char[size] {})
 	{
-		this->size = size;
-		this->str = new char[size] {};
+		//this->size = size;
+		//this->str = new char[size] {};
 		std::cout << "DefaultConstruct:" << this << std::endl;
 	}
-	String(const char* str)
+	String(const char* str) :String(strlen(str) + 1)
 	{
-		this->size = strlen(str) + 1;
-		this->str = new char[size] {};
+		/*this->size = strlen(str) + 1;
+		this->str = new char[size] {};*/
 		for (int i = 0; i < size; i++)this->str[i] = str[i];
 		std::cout << "Constructor:\t" << this << std::endl;
 	}
 
-	String(const String& other)
+	String(const String& other) :String(other.str)
 	{
-		this->size = other.size;
+		/*this->size = other.size;
 		this->str = new char[size] {};
-		//for (int i = 0; i < size; i++)this->str[i] = other.str[i];
-		strcpy_s(this->str, size, other.str);
+		for (int i = 0; i < size; i++)this->str[i] = other.str[i];*/
+		//strcpy_s(this->str, size, other.str);
 		std::cout << "CopyConstructor:" << this << std::endl;
 	}
-	String(String&& other)
+	String(String&& other):size(other.size),str(other.str)
 	{
-		this->size = other.size;
-		this->str = other.str;
+		/*this->size = other.size;
+		this->str = other.str;*/
 		other.str = nullptr;
 		std::cout << "MoveConstructor:\t" << this << std::endl;
 	}
@@ -109,7 +109,7 @@ public:
 
 String operator+(const String& left, const String& right)
 {
-	String cat = left.get_size() + right.get_size() - 1;
+	String cat(left.get_size() + right.get_size() - 1);
 
 	/*for (int i = 0; i < left.get_size(); i++)cat.get_str()[i] = left.get_str()[i];
 	for (int i = 0; i < right.get_size(); i++)
@@ -161,7 +161,7 @@ std::istream& operator>>(std::istream& is, String& obj)
 }
 
 //#define CONSTRUCTORS_CHECK
-//#define OPERATOR_PLUS_CHECK
+#define OPERATOR_PLUS_CHECK
 //#define INPUT_CHECK
 
 void main()
@@ -190,7 +190,7 @@ void main()
 	String str1 = "Hello";
 	String str2 = "World";
 	std::cout << "\n----------------------------------\n";
-	String str3 = str1 + str2;
+	String str3 = str1 + " " + str2;
 	std::cout << "\n----------------------------------\n";
 	std::cout << str3 << std::endl;
 	//str1 += str2;
@@ -205,7 +205,9 @@ void main()
 	std::cout << str << std::endl;
 #endif // INPUT_CHECK
 
-	String str1 = "Hello";
+	/*String str1 = "Hello";
 	String str2 = "World";
 	std::cout << (str1 < str1) << std::endl;
+
+	String str(5);*/
 }
