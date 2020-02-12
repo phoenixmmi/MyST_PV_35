@@ -8,7 +8,7 @@ class String
 	int size;	//Number of Bytes
 	char* str;
 public:
-	int get_size()const
+	const int get_size()const
 	{
 		return size;
 	}
@@ -19,6 +19,14 @@ public:
 	char* get_str()
 	{
 		return str;
+	}
+
+	void set_str(const char* str)
+	{
+		delete[] this->str;
+		this->size = strlen(str) + 1;
+		this->str = new char[size] {};
+		strcpy(this->str, str);
 	}
 
 	/*String()
@@ -114,15 +122,51 @@ String operator+(const String& left, const String& right)
 	return cat;
 }
 
+bool operator==(const String& left, const String& right)
+{
+	if (strlen(left.get_str()) != strlen(right.get_str()))return false;
+	for (int i = 0; left[i]; i++)
+	{
+		if (left[i] != right[i])return false;
+	}
+	return true;
+}
+
+bool operator!=(const String& left, const String& right)
+{
+	return !(left == right);
+}
+
+bool operator<(const String& left, const String& right)
+{
+	/*if (strcmp(left.get_str(), right.get_str()) < 0)return true;
+	else return false;*/
+
+	return strcmp(left.get_str(), right.get_str()) < 0 ? true : false;
+}
+
 std::ostream& operator<<(std::ostream& os, const String& obj)
 {
 	return os << obj.get_str();
 }
 
+std::istream& operator>>(std::istream& is, String& obj)
+{
+	char* sz_str = new char[USHRT_MAX] {};
+	is >> sz_str;
+	sz_str = (char*)realloc(sz_str, strlen(sz_str) + 1);
+	obj.set_str(sz_str);
+	delete[] sz_str;
+	return is;
+}
+
 //#define CONSTRUCTORS_CHECK
+//#define OPERATOR_PLUS_CHECK
+//#define INPUT_CHECK
 
 void main()
 {
+
 #ifdef CONSTRUCTORS_CHECK
 	String str1;
 	str1.print();
@@ -142,6 +186,7 @@ void main()
 	std::cout << str1 << std::endl;
 #endif // CONSTRUCTORS_CHECK
 
+#ifdef OPERATOR_PLUS_CHECK
 	String str1 = "Hello";
 	String str2 = "World";
 	std::cout << "\n----------------------------------\n";
@@ -149,5 +194,18 @@ void main()
 	std::cout << "\n----------------------------------\n";
 	std::cout << str3 << std::endl;
 	//str1 += str2;
-	//std::cout << str1 << std::endl;
+	//std::cout << str1 << std::endl;  
+#endif // OPERATOR_PLUS_CHECK
+
+#ifdef INPUT_CHECK
+	String str = "Hello";
+	//std::cout << "Input string: ";
+	std::cout << str << std::endl;
+	std::cin >> str;
+	std::cout << str << std::endl;
+#endif // INPUT_CHECK
+
+	String str1 = "Hello";
+	String str2 = "World";
+	std::cout << (str1 < str1) << std::endl;
 }
