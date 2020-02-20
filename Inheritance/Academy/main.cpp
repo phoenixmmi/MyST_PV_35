@@ -101,7 +101,8 @@ public:
 	{
 		set_specialty(spec);
 		set_group(group);
-		this->rating = this->attendence = 0;
+		set_rating(rating);
+		set_attendence(attendence);
 		std::cout << "SConstructor:\t" << this << std::endl;
 	}
 	~Student()
@@ -111,6 +112,7 @@ public:
 
 	void print()
 	{
+		Human::print();
 		std::cout << spec << "\t" << group << ", успеваемость " << rating << "%, посещаемость " << attendence << "%\n";
 	}
 };
@@ -150,7 +152,7 @@ public:
 	Teacher
 	(
 		const std::string& last_name, const std::string& first_name, unsigned int age,
-		const std::string& subject, unsigned int number_of_groups, unsigned int evil=20
+		const std::string& subject, unsigned int number_of_groups, unsigned int evil = 20
 	) :Human(last_name, first_name, age)
 	{
 		set_subject(subject);
@@ -165,10 +167,75 @@ public:
 	void print()
 	{
 		Human::print();
-		std::cout << "Предмет: " << subject 
-			<< ", количество групп: " << experience 
+		std::cout << "Предмет: " << subject
+			<< ", количество групп: " << experience
 			<< ", уровень злости: " << evil << std::endl;
 	}
+};
+
+class Graduate :public Student
+{
+	std::string diploma_theme;
+	std::string curator;
+	void set_diploma_theme(const std::string& diploma_theme)
+	{
+		this->diploma_theme = diploma_theme;
+	}
+public:
+	const std::string& get_diploma_theme()const
+	{
+		return diploma_theme;
+	}
+	const std::string& get_curator()const
+	{
+		return curator;
+	}
+	void set_curator(const std::string& curator)
+	{
+		this->curator = curator;
+	}
+
+	//			Constructors:
+	Graduate
+	(
+		const std::string& last_name, const std::string& first_name, unsigned int age,
+		const std::string& spec, const std::string& group, unsigned int rating, unsigned int attendence,
+		const std::string& diploma_theme, const std::string& curator
+	) :
+		Student
+		(
+			last_name, first_name, age,
+			spec, group, rating, attendence
+		)
+	{
+		set_diploma_theme(diploma_theme);
+		set_curator(curator);
+		std::cout << "GConstructor:\t" << this << std::endl;
+	}
+	~Graduate()
+	{
+		std::cout << "GDestructor:\t" << this << std::endl;
+	}
+
+	void print()
+	{
+		Student::print();
+		std::cout << "Diploma theme: " << diploma_theme << ", curator: " << curator << std::endl;
+	}
+};
+
+class Car
+{
+	class Tank
+	{
+		int volume;
+		double fuel;
+	}tank;
+	class Engine
+	{
+		double volume;
+		int power;
+	}engine;
 };
 
 void main()
@@ -181,4 +248,7 @@ void main()
 	stud.print();
 
 	Teacher("Einstein", "Albert", 141, "Astronomy", 5, 5).print();
+
+	Graduate tommy("Vercetti", "Tom", 30, "Mercenary", "extreme killers", 95, 70, "How to kill Diaz", "Colonel Cortez");
+	tommy.print();
 }
