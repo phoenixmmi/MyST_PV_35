@@ -1,5 +1,6 @@
 #include<iostream>
 #include<string>
+#include<regex>
 
 class Human
 {
@@ -21,6 +22,7 @@ public:
 	}
 	void set_last_name(const std::string& last_name)
 	{
+		//std::regex exp("\\w");
 		this->last_name = last_name;
 	}
 	void set_first_name(const std::string& first_name)
@@ -40,14 +42,20 @@ public:
 		set_age(age);
 		std::cout << "HConstructor:\t" << this << std::endl;
 	}
-	~Human()
+	virtual ~Human()
 	{
 		std::cout << "HDestructor:\t" << this << std::endl;
 	}
 
-	void print()const
+	virtual void print()
 	{
-		std::cout << last_name << "\t" << first_name << "\t" << age << std::endl;
+		//std::ios_base::left;
+		std::cout.width(8);
+		std::cout << last_name << "\t";
+		std::cout.width(8);
+		std::cout << first_name << "\t";
+		std::cout.width(8);
+		std::cout << age << std::endl;
 	}
 };
 
@@ -241,7 +249,7 @@ class Car
 void main()
 {
 	setlocale(LC_ALL, "");
-	Human human("Тупенко123", "Васыль????", 18);
+	/*Human human("Тупенко123", "Васыль????", 18);
 	human.print();
 
 	Student stud("Тупенко", "Васыль", 18, "Дизайн", "СТ ДВ 37");
@@ -250,5 +258,35 @@ void main()
 	Teacher("Einstein", "Albert", 141, "Astronomy", 5, 5).print();
 
 	Graduate tommy("Vercetti", "Tom", 30, "Mercenary", "extreme killers", 95, 70, "How to kill Diaz", "Colonel Cortez");
-	tommy.print();
+	tommy.print();*/
+
+#ifdef POLYMORPHISM
+	Human* group[] =
+	{
+		new Student("Ковальчук23", "Антон??", 15, "РПО", "СТ ПВ 35", 95, 100),
+		new Student("Кравцов", "Артем", 15, "РПО", "СТ ПВ 35", 85, 97),
+		new Teacher("Кобылинский", "Андрей", 42, "Hardware&Windows", 5, 0),
+		new Student("Горбенко", "Богдан", 16, "РПО", "СТ ПВ 35", 99, 100),
+		new Graduate("Маслак", "Михаил", 17, "РПО", "СТ ПВ 35", 95, 100, "3D Shooter development", "OA"),
+		new Teacher("Котун", "Олег", 35, "C++", 5, 32),
+		new Graduate("Колач", "Геннадий", 21, "РПО", "СТ ИТВ 35", 96, 100, "Разработка игры для Android", "Some teacher")
+	};
+
+	std::cout << "-----------------------------------------------------------\n";
+	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
+	{
+		group[i]->print();
+		std::cout << "-----------------------------------------------------------\n";
+	}
+
+	for (int i = 0; i < sizeof(group) / sizeof(Human*); i++)
+	{
+		delete group[i];
+	}
+#endif // POLYMORPHISM
+
+	std::string name;
+	std::cout << "Input name: "; std::cin >> name;
+	std::regex rgx("[A-Z][a-z]{1,20}");
+	std::cout << std::regex_match(name, rgx, std::regex_constants::match_default) << std::endl;
 }
