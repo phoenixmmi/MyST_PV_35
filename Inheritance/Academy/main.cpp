@@ -246,6 +246,10 @@ class Car
 	}engine;
 };
 
+//#define POLYMORPHISM
+//#define REGEX_NAME
+#define REGEX_GROUP
+
 void main()
 {
 	setlocale(LC_ALL, "");
@@ -269,7 +273,7 @@ void main()
 		new Student("Горбенко", "Богдан", 16, "РПО", "СТ ПВ 35", 99, 100),
 		new Graduate("Маслак", "Михаил", 17, "РПО", "СТ ПВ 35", 95, 100, "3D Shooter development", "OA"),
 		new Teacher("Котун", "Олег", 35, "C++", 5, 32),
-		new Graduate("Колач", "Геннадий", 21, "РПО", "СТ ИТВ 35", 96, 100, "Разработка игры для Android", "Some teacher")
+		new Graduate("Колач", "Геннадий", 22, "РПО", "СТ ИТВ 35", 96, 100, "Разработка игры для Android", "Some teacher")
 	};
 
 	std::cout << "-----------------------------------------------------------\n";
@@ -285,8 +289,25 @@ void main()
 	}
 #endif // POLYMORPHISM
 
+#ifdef REGEX_NAME
 	std::string name;
 	std::cout << "Input name: "; std::cin >> name;
 	std::regex rgx("[A-Z][a-z]{1,20}");
 	std::cout << std::regex_match(name, rgx, std::regex_constants::match_default) << std::endl;
+#endif // REGEX_NAME
+
+#ifdef REGEX_GROUP
+	std::regex rgx("(ST|PS(_| )(SB|VS))[_ \-](PU|PV|ITU|ITV|DU|DV)[_ \-]\\d{2}[abv]?");
+	/*std::string group1 = "ST_PV_35";
+	std::string group2 = "ST PV 35";
+	std::cout << std::regex_match(group1, rgx, std::regex_constants::match_default) << std::endl;
+	std::cout << std::regex_match(group2, rgx, std::regex_constants::match_default) << std::endl;*/
+	std::string group;
+	std::cout << "Input group: "; //std::cin >> group;
+	getline(std::cin, group);
+	std::regex rgx_replace(" |\-");
+	group = std::regex_replace(group, rgx_replace, "_", std::regex_constants::match_default);
+	std::cout << std::regex_match(group, rgx, std::regex_constants::match_default) << std::endl;
+	std::cout << group << std::endl;
+#endif
 }
