@@ -3,10 +3,14 @@
 class Animal
 {
 public:
-	virtual void sound()const
+	virtual ~Animal()
 	{
-		std::cout << "Some sound" << std::endl;
+
 	}
+	virtual void sound()const = 0;
+	/*{
+		std::cout << "Some sound" << std::endl;
+	}*/
 };
 
 class Cat :public Animal
@@ -52,9 +56,24 @@ class ChihuaHua :public Dog
 	}
 };
 
+class WildAnimal :public Animal
+{
+
+};
+
+class Wolf :public WildAnimal
+{
+public:
+	void sound()const
+	{
+		std::cout << "Auuuuuuuuu" << std::endl;
+	}
+};
+
 void main()
 {
 	setlocale(LC_ALL, "");
+
 	/*Cat tom;
 	Dog spike;
 	Mouse jerry;
@@ -77,4 +96,9 @@ void main()
 	{
 		zoo[i]->sound();
 	}
+
+	//Animal animal;
+	//WildAnimal wa;
+	Wolf wolf;
+	wolf.sound();
 }
