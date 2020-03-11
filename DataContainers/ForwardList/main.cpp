@@ -28,23 +28,48 @@ class ForwardList
 	Element* Head;
 	unsigned int Size;
 public:
+	unsigned int get_size()const
+	{
+		return Size;
+	}
 	ForwardList()
 	{
 		Head = nullptr;	//≈сли список пуст, то его голова указывает на 0;
 		Size = 0;
 		std::cout << "LConstructor:\t" << this << std::endl;
 	}
+	ForwardList(int size) :ForwardList()
+	{
+		while (size--)push_front(0);
+	}
+	ForwardList(const std::initializer_list<int>& il) :ForwardList()
+	{
+		for (const int* it = il.begin(); it != il.end(); it++)
+		{
+			push_back(*it);
+		}
+	}
 	~ForwardList()
 	{
+		while (Head)pop_front();
 		std::cout << "LDestructor:\t" << this << std::endl;
+	}
+
+	//			Operators:
+	int& operator[](int index)
+	{
+		Element* Temp = Head;
+		for (int i = 0; i < index; i++)Temp = Temp->pNext;
+		return Temp->Data;
 	}
 
 	//			Adding elements:
 	void push_front(int Data)
 	{
-		Element* New = new Element(Data);
+		/*Element* New = new Element(Data);
 		New->pNext = Head;
-		Head = New;
+		Head = New;*/
+		Head = new Element(Data, Head);
 		Size++;
 	}
 	void push_back(int Data)
@@ -80,9 +105,10 @@ public:
 		{
 			Temp = Temp->pNext;
 		}
-		Element* New = new Element(Data);
+		/*Element* New = new Element(Data);
 		New->pNext = Temp->pNext;
-		Temp->pNext = New;
+		Temp->pNext = New;*/
+		Temp->pNext = new Element(Data, Temp->pNext);
 		Size++;
 	}
 
@@ -105,6 +131,24 @@ public:
 		Temp->pNext = nullptr;
 		Size--;
 	}
+	void erase(int index)
+	{
+		if (index >= this->Size)
+		{
+			throw std::exception("Error: Out of range when erasing.");
+		}
+		if (index == 0)
+		{
+			pop_front();
+			return;
+		}
+		Element* Temp = Head;
+		for (int i = 0; i < index - 1; i++)	Temp = Temp->pNext;
+		Element* buffer = Temp->pNext;	//save address of destructing element.
+		Temp->pNext = Temp->pNext->pNext;//exclude destructing exement from list
+		delete buffer;	//remove element from memory
+		Size--;
+	}
 
 	//			Methods:
 	void print()const
@@ -120,11 +164,15 @@ public:
 	}
 };
 
+//#define BASE_FUNCTIONS_CHECK
+//#define CONSTRUCTORS_CHECK_1
+
 void main()
 {
 	setlocale(LC_ALL, "");
 	int n;
-	std::cout << "Input list size: "; std::cin >> n;
+	//std::cout << "Input list size: "; std::cin >> n;
+#ifdef BASE_FUNCTIONS_CHECK
 	//Element e(5);
 	ForwardList fl;
 
@@ -132,20 +180,20 @@ void main()
 	{
 		fl.push_back(rand() % 200);
 	}
-	fl.push_back(1024);
+	//fl.push_back(1024);
 	fl.print();
 	std::cout << delimiter << std::endl;
 	/*fl.pop_front();
 	fl.pop_back();
 	fl.print();*/
 
-	ForwardList fl2;
+	/*ForwardList fl2;
 	fl2.push_back(3);
 	fl2.push_back(5);
 	fl2.push_back(8);
 	fl2.push_back(13);
 	fl2.push_back(21);
-	fl2.print();
+	fl2.print();*/
 
 	int index;
 	int value;
@@ -154,11 +202,49 @@ void main()
 	fl.insert(index, value);
 	fl.print();
 
-	
+	//try
+	//{
+	//	std::cout << "Input index: "; std::cin >> index;
+	//	fl.erase(index);
+	//	fl.print();
+	//}
+	//catch (const std::exception& e)
+	//{
+	//	std::cerr << e.what() << std::endl;
+	//	/*
+	//	cin - Console Input;
+	//	cout - Console Output;
+	//	cerr - Console Error;
+	//	*/
+	//}
 
 	/*int* pa = new int(2);
 	delete[] pa;
 
 	int* arr = new int[5] {3, 5, 8, 13, 21};
 	delete arr;*/
+#endif // BASE_FUNCTIONS_CHECK
+
+#ifdef CONSTRUCTORS_CHECK_1
+	ForwardList fl(n);
+	fl.push_back(3);
+	fl.push_back(5);
+	fl.push_back(8);
+	fl.push_back(13);
+	fl.print();
+	for (int i = 0; i < fl.get_size(); i++)
+	{
+		fl[i] = rand() % 100;
+	}
+	for (int i = 0; i < fl.get_size(); i++)
+	{
+		std::cout << fl[i] << "\t";
+	}
+	std::cout << std::endl;
+#endif // CONSTRUCTORS_CHECK_1
+
+	ForwardList list = { 3, 5, 8, 13, 21 };
+	for (int i = 0; i < list.get_size(); i++)
+		std::cout << list[i] << "\t"; 
+	std::cout << std::endl;
 }
