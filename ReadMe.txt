@@ -4,13 +4,16 @@ https://github.com/okovtun/ST_PV_35
 ///////////////		Data containers   ///////////////
 /////////////////////////////////////////////////////////
 
-//			ForwardList
 TODO:
+ƒописать класс Iterator.
+
+//			ForwardList
+DONE:
 1. erase - удал€ет элемент с указанной позиции;				DONE
 2. Ќаписать конструктор, который создает список заданного размера;	DONE
 3. ѕерегрузить оператор [];				DONE
-4. CopyConstructor;
-5. CopyAssignment;
+4. CopyConstructor;		DONE
+5. CopyAssignment;		DONE
 6. ѕерегрузить оператор +, который сливает два списка в один, т.е., выполн€ет конкатенацию списков;
 4. MoveConstructor;
 5. MoveAssignment

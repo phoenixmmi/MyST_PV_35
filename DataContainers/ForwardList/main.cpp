@@ -8,6 +8,14 @@ class Element
 	Element* pNext;	//Адрес следующего элемента
 	static int count;
 public:
+	const int getData()const
+	{
+		return Data;
+	}
+	const Element* getpNext()const
+	{
+		return pNext;
+	}
 	Element(int Data, Element* pNext = nullptr) :Data(Data), pNext(pNext)
 	{
 		count++;
@@ -19,15 +27,40 @@ public:
 		std::cout << "EDestructor:\t" << this << std::endl;
 	}
 	friend class ForwardList;
+	friend class Iterator;
 };
 
 int Element::count = 0;
+
+class Iterator
+{
+	Element* Temp;
+public:
+	Iterator(Element* Temp)
+	{
+		this->Temp = Temp;
+	}
+	~Iterator()
+	{
+
+	}
+
+	Iterator& operator++()
+	{
+		Temp = Temp->pNext;
+		return *this;
+	}
+};
 
 class ForwardList
 {
 	Element* Head;
 	unsigned int Size;
 public:
+	const Element* get_head()const
+	{
+		return Head;
+	}
 	unsigned int get_size()const
 	{
 		return Size;
@@ -49,6 +82,21 @@ public:
 			push_back(*it);
 		}
 	}
+	ForwardList(const ForwardList& other) :ForwardList()
+	{
+		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)
+		{
+			push_back(Temp->Data);
+		}
+		std::cout << "FLCopyConstructor:\t" << this << std::endl;
+	}
+	ForwardList(ForwardList&& other)
+	{
+		this->Head = other.Head;
+		this->Size = other.Size;
+		other.Head = nullptr;
+		std::cout << "FLMoveConstructor:\t" << this << std::endl;
+	}
 	~ForwardList()
 	{
 		while (Head)pop_front();
@@ -56,6 +104,26 @@ public:
 	}
 
 	//			Operators:
+	ForwardList& operator=(const ForwardList& other)
+	{
+		while (Head)pop_front();
+		for (Element* Temp = other.Head; Temp != nullptr; Temp = Temp->pNext)
+		{
+			push_back(Temp->Data);
+		}
+		std::cout << "FLCopyAssignment:\t" << this << std::endl;
+		return *this;
+	}
+
+	ForwardList& operator=(ForwardList&& other)
+	{
+		this->Head = other.Head;
+		this->Size = other.Size;
+		other.Head = nullptr;
+		std::cout << "FLMoveAssignment:\t" << this << std::endl;
+		return *this;
+	}
+
 	int& operator[](int index)
 	{
 		Element* Temp = Head;
@@ -164,6 +232,15 @@ public:
 	}
 };
 
+ForwardList operator+(const ForwardList& left, const ForwardList& right)
+{
+	ForwardList buffer = left;
+	//for (const Element* Temp = right.get_head(); Temp != nullptr; Temp = Temp->getpNext())
+	for (const Element* Temp = right.get_head(); Temp != nullptr; Temp = Temp->getpNext())
+		buffer.push_back(Temp->getData());
+	return buffer;
+}
+
 //#define BASE_FUNCTIONS_CHECK
 //#define CONSTRUCTORS_CHECK_1
 
@@ -239,12 +316,20 @@ void main()
 	for (int i = 0; i < fl.get_size(); i++)
 	{
 		std::cout << fl[i] << "\t";
-	}
+}
 	std::cout << std::endl;
 #endif // CONSTRUCTORS_CHECK_1
 
 	ForwardList list = { 3, 5, 8, 13, 21 };
+	list.print();
 	for (int i = 0; i < list.get_size(); i++)
-		std::cout << list[i] << "\t"; 
+		std::cout << list[i] << "\t";
 	std::cout << std::endl;
+
+	ForwardList list2 = { 34,55,89 };
+	//list2 = list;
+	list2.print();
+	ForwardList list3;
+	list3 = list + list2;
+	list3.print();
 }
