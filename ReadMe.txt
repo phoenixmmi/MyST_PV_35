@@ -4,7 +4,17 @@ https://github.com/okovtun/ST_PV_35
 ///////////////		Data containers   ///////////////
 /////////////////////////////////////////////////////////
 
-TODO:
+//			List:
+В класс List добавить методы:
+push_back;
+pop_front;
+pop_back;
+insert;
+erase;
+Каждый из методов проверить при помощи print и print_reverse;
+
+
+DONE:
 Дописать класс Iterator.
 
 //			ForwardList
