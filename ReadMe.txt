@@ -5,12 +5,26 @@ https://github.com/okovtun/ST_PV_35
 /////////////////////////////////////////////////////////
 
 //			List:
+TODO:
+Проверчный код в main.cpp проекта List должен заработать.
+
+TODO:
+1. Оптимизировать алгоритм вставки элемента в методе insert;
+2. erase;	DONE
+3. initializer_list constructor;DONE
+4. opertor+;
+5. CopyMethods;	DONE
+6. MoveMethods;
+7. size_constructor;
+
+
+DONE:
 В класс List добавить методы:
 push_back;
 pop_front;
 pop_back;
 insert;
-erase;
+
 Каждый из методов проверить при помощи print и print_reverse;
 
 
