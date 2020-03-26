@@ -80,6 +80,23 @@ public:
 		//////////////////
 	};
 
+	const Iterator begin()const
+	{
+		return this->head;
+	}
+	Iterator begin()
+	{
+		return this->head;
+	}
+	const Iterator end()const
+	{
+		return nullptr;
+	}
+	Iterator end()
+	{
+		return nullptr;
+	}
+
 	List()
 	{
 		head = tail = nullptr;
@@ -89,9 +106,13 @@ public:
 	List(const std::initializer_list<int>& il) :List()
 	{
 		std::cout << typeid(il.begin()).name() << std::endl;
-		for (int const* it = il.begin(); it != il.end(); it++)
+		/*for (int const* it = il.begin(); it != il.end(); it++)
 		{
 			push_back(*it);
+		}*/
+		for (int i : il)
+		{
+			push_back(i);
 		}
 	}
 	List(const List& other) :List()
@@ -103,6 +124,14 @@ public:
 		for (Iterator it = other.head; it != nullptr; it++)
 			push_back(*it);
 		std::cout << "LCopyConstructor:\t" << this << std::endl;
+	}
+	List(List&& other)
+	{
+		this->head = other.head;
+		this->tail = other.tail;
+		this->size = other.size;
+		other.head = other.tail = nullptr;
+		std::cout << "LMoveConstructor:\t" << this << std::endl;
 	}
 	~List()
 	{
@@ -119,8 +148,18 @@ public:
 	{
 		if (this == &other)return *this;
 		while (head)pop_front();
-		for (Element* Temp = other.head; Temp; Temp++)push_back(Temp->data);
+		for (Element* Temp = other.head; Temp; Temp=Temp->pNext)push_back(Temp->data);
 		std::cout << "LCopyAssignment:\t" << this << std::endl;
+		return *this;
+	}
+	List& operator=(List&& other)
+	{
+		while (head)pop_front();
+		this->head = other.head;
+		this->tail = other.tail;
+		this->size = other.size;
+		other.head = other.tail = nullptr;
+		std::cout << "LMoveConstructor:\t" << this << std::endl;
 		return *this;
 	}
 
@@ -252,13 +291,24 @@ public:
 	}
 };
 
+List operator+(const List& left, const List& right)
+{
+	List buffer = left;	//CopyConstructor
+	for (List::Iterator it = right.begin(); it != right.end(); it++)
+	{
+		buffer.push_back(*it);
+	}
+	std::cout << "Global operator +\n";
+	return buffer;
+}
+
 //#define BASE_CHECK
 //#define CONSTRUCTORS_CHECK
 
 void main()
 {
 	int n;
-	std::cout << "Input list size: "; std::cin >> n;
+	//std::cout << "Input list size: "; std::cin >> n;
 #ifdef BASE_CHECK
 	List list;
 	for (int i = 0; i < n; i++)
@@ -281,7 +331,7 @@ void main()
 	catch (const std::exception& e)
 	{
 		std::cerr << e.what() << std::endl;
-	}
+}
 #endif // BASE_CHECK
 
 #ifdef CONSTRUCTORS_CHECK
@@ -306,8 +356,28 @@ void main()
 	std::cout << std::endl;
 
 	List list = { 3, 5, 8, 13, 21 };
-	for (int i : list)
+	//list.print();
+	//list.print_reverse();
+
+	for (List::Iterator it = list.begin(); it != list.end(); it++)
+		std::cout << *it << "\t";
+	std::cout << std::endl;
+
+	List list2 = { 34,55,89 };
+	for (List::Iterator it = list2.begin(); it != list2.end(); it++)
 	{
-		std::cout << i << std::endl;
+		std::cout << *it << "\t";
 	}
+	std::cout << std::endl;
+	std::cout << "\n----------------------------------------------------------------------\n";
+	/*for (int i : list + list2)
+	{
+		std::cout << i << "\t";
+	}
+	std::cout << std::endl;*/
+
+	List list3;
+	list3 = list + list2;
+	list3.print();
+	std::cout << "\n----------------------------------------------------------------------\n";
 }

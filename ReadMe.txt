@@ -9,12 +9,12 @@ TODO:
 Проверчный код в main.cpp проекта List должен заработать.
 
 TODO:
-1. Оптимизировать алгоритм вставки элемента в методе insert;
+1. Оптимизировать алгоритм вставки элемента в методе insert; DONE
 2. erase;	DONE
 3. initializer_list constructor;DONE
-4. opertor+;
+4. opertor+;	DONE
 5. CopyMethods;	DONE
-6. MoveMethods;
+6. MoveMethods; DONE
 7. size_constructor;
 
 
