@@ -27,20 +27,18 @@ public:
 	{
 		Element* Temp;
 	public:
-		Iterator(Element* Temp)
+		Iterator(Element* Temp = nullptr)
 		{
 			this->Temp = Temp;
 #ifdef DEBUG
 			std::cout << "ItConstructor:\t" << this << std::endl;
 #endif // DEBUG
-
 		}
 		~Iterator()
 		{
 #ifdef DEBUG
 			std::cout << "ItDestructor:\t" << this << std::endl;
 #endif // DEBUG
-
 		}
 
 		//		Operators:
@@ -61,7 +59,6 @@ public:
 		{
 			return Temp->data;
 		}
-
 		int& operator*()
 		{
 			return Temp->data;
@@ -71,7 +68,6 @@ public:
 		{
 			return this->Temp == other.Temp;
 		}
-
 		bool operator!=(const Iterator& other)const
 		{
 			return this->Temp != other.Temp;
@@ -80,11 +76,57 @@ public:
 		//////////////////
 	};
 
-	const Iterator begin()const
+	class ReverseIterator
 	{
-		return this->head;
-	}
-	Iterator begin()
+		Element* Temp;
+	public:
+		ReverseIterator(Element* Temp = nullptr)
+		{
+			this->Temp = Temp;
+#ifdef DEBUG
+			std::cout << "RItConstructor:\t" << this << std::endl;
+#endif // DEBUG
+		}
+		~ReverseIterator()
+		{
+#ifdef DEBUG
+			std::cout << "RItDestructor:\t" << this << std::endl;
+#endif // DEBUG
+		}
+
+		//		Operators:
+		ReverseIterator& operator++()
+		{
+			Temp = Temp->pPrev;
+			return *this;
+		}
+		ReverseIterator operator++(int)
+		{
+			ReverseIterator old = *this;
+			Temp = Temp->pPrev;
+			return old;
+		}
+
+		const int& operator*()const
+		{
+			return Temp->data;
+		}
+		int& operator*()
+		{
+			return Temp->data;
+		}
+
+		bool operator==(const ReverseIterator& other)const
+		{
+			return this->Temp == other.Temp;
+		}
+		bool operator!=(const ReverseIterator& other)const
+		{
+			return this->Temp != other.Temp;
+		}
+	};
+
+	const Iterator begin()const
 	{
 		return this->head;
 	}
@@ -92,9 +134,29 @@ public:
 	{
 		return nullptr;
 	}
+	const ReverseIterator rbegin()const
+	{
+		return tail;
+	}
+	const ReverseIterator rend()const
+	{
+		return head->pPrev;
+	}
+	Iterator begin()
+	{
+		return this->head;
+	}
 	Iterator end()
 	{
-		return nullptr;
+		return tail->pNext;
+	}
+	ReverseIterator rbegin()
+	{
+		return tail;
+	}
+	ReverseIterator rend()
+	{
+		return head->pPrev;
 	}
 
 	List()
@@ -148,7 +210,7 @@ public:
 	{
 		if (this == &other)return *this;
 		while (head)pop_front();
-		for (Element* Temp = other.head; Temp; Temp=Temp->pNext)push_back(Temp->data);
+		for (Element* Temp = other.head; Temp; Temp = Temp->pNext)push_back(Temp->data);
 		std::cout << "LCopyAssignment:\t" << this << std::endl;
 		return *this;
 	}
@@ -331,7 +393,7 @@ void main()
 	catch (const std::exception& e)
 	{
 		std::cerr << e.what() << std::endl;
-}
+	}
 #endif // BASE_CHECK
 
 #ifdef CONSTRUCTORS_CHECK
@@ -378,6 +440,16 @@ void main()
 
 	List list3;
 	list3 = list + list2;
-	list3.print();
+	//list3.print();
+	for (int i : list3)
+	{
+		std::cout << i << "\t";
+	}
+	//std::cout << std::endl;
 	std::cout << "\n----------------------------------------------------------------------\n";
+	for (List::ReverseIterator rit = list3.rbegin(); rit != list3.rend(); rit++)
+	{
+		std::cout << *rit << "\t";
+	}
+	std::cout << std::endl;
 }
