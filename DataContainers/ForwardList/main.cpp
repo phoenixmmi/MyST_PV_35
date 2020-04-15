@@ -19,12 +19,18 @@ public:
 	Element(int Data, Element* pNext = nullptr) :Data(Data), pNext(pNext)
 	{
 		count++;
+#ifdef DEBUG
 		std::cout << "EConstructor:\t" << this << std::endl;
+#endif // DEBUG
+
 	}
 	~Element()
 	{
 		count--;
+#ifdef DEBUG
 		std::cout << "EDestructor:\t" << this << std::endl;
+#endif // DEBUG
+
 	}
 	friend class ForwardList;
 	friend class Iterator;
@@ -45,10 +51,18 @@ public:
 
 	}
 
+	int& operator*()
+	{
+		return Temp->Data;
+	}
 	Iterator& operator++()
 	{
 		Temp = Temp->pNext;
 		return *this;
+	}
+	bool operator!=(const Iterator& other)const
+	{
+		return this->Temp != other.Temp;
 	}
 };
 
@@ -58,6 +72,10 @@ class ForwardList
 	unsigned int Size;
 public:
 	const Element* get_head()const
+	{
+		return Head;
+	}
+	Element* get_head()
 	{
 		return Head;
 	}
@@ -248,7 +266,7 @@ void main()
 {
 	setlocale(LC_ALL, "");
 	int n;
-	//std::cout << "Input list size: "; std::cin >> n;
+	std::cout << "Input list size: "; std::cin >> n;
 #ifdef BASE_FUNCTIONS_CHECK
 	//Element e(5);
 	ForwardList fl;
@@ -316,20 +334,32 @@ void main()
 	for (int i = 0; i < fl.get_size(); i++)
 	{
 		std::cout << fl[i] << "\t";
-}
+	}
 	std::cout << std::endl;
 #endif // CONSTRUCTORS_CHECK_1
 
-	ForwardList list = { 3, 5, 8, 13, 21 };
+	/*ForwardList list = { 3, 5, 8, 13, 21 };
 	list.print();
 	for (int i = 0; i < list.get_size(); i++)
 		std::cout << list[i] << "\t";
 	std::cout << std::endl;
 
 	ForwardList list2 = { 34,55,89 };
-	//list2 = list;
+	list2 = list;
 	list2.print();
 	ForwardList list3;
 	list3 = list + list2;
-	list3.print();
+	list3.print();*/
+
+
+	ForwardList list(n);
+	/*for (int i = 0; i < list.get_size(); i++)
+	{
+		list[i] = rand() % 100;
+	}*/
+	for (Iterator it = list.get_head(); it != nullptr; ++it)
+	{
+		*it = rand() % 100;
+	}
+	std::wcout << "List filled\n";
 }

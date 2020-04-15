@@ -4,6 +4,13 @@ https://github.com/okovtun/ST_PV_35
 ////////////	Standard Template Library    ////////////
 /////////////////////////////////////////////////////////
 
+TODO:
+http://cplusplus.com/reference/map/map/
+http://cplusplus.com/reference/set/set/
+http://cplusplus.com/reference/list/
+Последнее задание в *.pdf-файле (про ГАИ :-))
+
+DONE:
 http://cplusplus.com/reference/stl/
 http://cplusplus.com/reference/vector/vector/
 http://cplusplus.com/reference/deque/deque/
@@ -14,7 +21,7 @@ http://cplusplus.com/reference/deque/deque/
 
 //			Binary Tree
 
-TODO:
+DONE:
 1. ILconstructor;
 2. CopyConstructor/CopyAssignment;
 

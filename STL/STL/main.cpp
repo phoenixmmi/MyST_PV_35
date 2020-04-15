@@ -1,6 +1,8 @@
 #include<iostream>
 #include<array>
 #include<vector>
+#include<deque>
+#include<forward_list>
 
 /*
 -----------------------------------------------------------------------------------
@@ -27,7 +29,9 @@ Container - это объект, который организует хранение других объектов в памяти.
 */
 
 //#define ARRAY
-#define VECTOR
+//#define VECTOR
+//#define DEQUE
+#define FORWARD_LIST
 
 const int SIZE = 5;
 
@@ -96,6 +100,7 @@ void main()
 	}
 	std::cout << std::endl;
 	std::cout << "vector size:\t" << vec.size() << std::endl;
+	vec.shrink_to_fit();
 	std::cout << "vector capacity:" << vec.capacity() << std::endl;
 	std::cout << "vector max size:" << vec.max_size() << std::endl;
 
@@ -103,7 +108,50 @@ void main()
 	int value;
 	std::cout << "Type index: "; std::cin >> index;
 	std::cout << "Type value: "; std::cin >> value;
-	std::vector<int>::iterator position = vec.begin() + index;
-	//vec.insert()
+	//std::vector<int>::iterator position = vec.begin() + index;
+	//vec.insert(position, value);
+	vec.insert(vec.begin() + index, 3, value);
+	for (std::vector<int>::iterator it = vec.begin(); it != vec.end(); it++)
+	{
+		std::cout << *it << "\t";
+	}
+	std::cout << std::endl;
+	std::cout << "vector size:\t" << vec.size() << std::endl;
+	std::cout << "vector capacity:" << vec.capacity() << std::endl;
+	std::cout << "vector max size:" << vec.max_size() << std::endl;
 #endif
+
+#ifdef DEQUE
+	std::deque<int> de{ 3,5,8,13 };
+	de.push_front(0);
+	de.push_front(1);
+	de.push_front(1);
+	de.push_front(2);
+	for (int i : de)
+	{
+		std::cout << i << "\t";
+	}
+	std::cout << std::endl;
+#endif // DEQUE
+
+#ifdef FORWARD_LIST
+	std::forward_list<int> list = { 3,5,8,13,21 };
+	/*for (int i = 0; i < 5; i++)
+	{
+		//NO SUBSCRIPT OPERATOR!!!
+		std::cout << list[i] << "\t";
+	}*/
+	for (std::forward_list<int>::iterator it = list.begin(); it != list.end(); it++)
+	{
+		std::cout << *it << "\t";
+	}
+	std::cout << std::endl;
+	int index;
+	int value;
+	std::cout << "Type index: "; std::cin >> index;
+	std::cout << "Type value: "; std::cin >> value;
+
+	list.insert_after(position, value);
+#endif // FORWARD_LIST
+
 }
