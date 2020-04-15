@@ -1,5 +1,6 @@
 #include<iostream>
 #include<array>
+#include<vector>
 
 /*
 -----------------------------------------------------------------------------------
@@ -25,10 +26,12 @@ Container - это объект, который организует хранение других объектов в памяти.
 -----------------------------------------------------------------------------------
 */
 
-#define ARRAY
+//#define ARRAY
+#define VECTOR
 
 const int SIZE = 5;
 
+#ifdef ARRAY
 void print(const std::array<int, SIZE>& arr)
 {
 	for (std::array<int, SIZE>::const_iterator it = arr.begin(); it != arr.end(); it++)
@@ -38,6 +41,8 @@ void print(const std::array<int, SIZE>& arr)
 	}
 	std::cout << std::endl;
 }
+#endif // ARRAY
+
 
 void main()
 {
@@ -73,4 +78,32 @@ void main()
 	print(arr);
 #endif // ARRAY
 
+#ifdef VECTOR
+	//vector - это контейнер, который хранит данные в виде динамического массива.
+	std::vector<int> vec{ 0,1,1,2,3,5,8,13,21,34};
+	vec.push_back(55);
+	try
+	{
+		for (int i = 0; i < vec.size(); i++)
+		{
+			//std::cout << vec[i] << "\t";
+			std::cout << vec.at(i) << "\t";
+		}
+	}
+	catch (const std::exception& e)
+	{
+		std::cerr << e.what() << std::endl;
+	}
+	std::cout << std::endl;
+	std::cout << "vector size:\t" << vec.size() << std::endl;
+	std::cout << "vector capacity:" << vec.capacity() << std::endl;
+	std::cout << "vector max size:" << vec.max_size() << std::endl;
+
+	int index;
+	int value;
+	std::cout << "Type index: "; std::cin >> index;
+	std::cout << "Type value: "; std::cin >> value;
+	std::vector<int>::iterator position = vec.begin() + index;
+	//vec.insert()
+#endif
 }
