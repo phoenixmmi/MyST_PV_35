@@ -3,15 +3,30 @@
 #include<string>
 #include<map>
 #include<list>
+#include<Windows.h>
 
+std::map<std::string, std::list<std::string>> init();
 void print_full_base(const std::map<std::string, std::list<std::string>>& base);
 void save(const std::map<std::string, std::list<std::string>>& base);
+void load(std::map<std::string, std::list<std::string>>& base);
+void insert(std::map<std::string, std::list<std::string>>& base);
 
 void main()
 {
 	setlocale(LC_ALL, "");
 	//map - это контейнер, который хранит данные в виде Бинарного дерева. 
 	//Каждый элемент этого дерева представляет собой ПАРУ: key - value.
+	//std::cout << typeid(std::string("Hello").c_str()).name() << std::endl;
+	std::map<std::string, std::list<std::string>> base = init();
+#define delimiter "\n------------------------------------\n"
+	print_full_base(base);
+	insert(base);
+	print_full_base(base);
+	save(base);
+}
+
+std::map<std::string, std::list<std::string>> init()
+{
 	std::map<std::string, std::list<std::string>> base =
 	{
 		std::pair<std::string, std::list<std::string>>("BI 0000 BI", {"привышение скорости", "вождение в нетрезвом состоянии"}),
@@ -19,9 +34,7 @@ void main()
 		std::pair<std::string, std::list<std::string>>("BI 0002 BI", {"парковка в неположенном месте"}),
 		std::pair<std::string, std::list<std::string>>("BI 0003 BI", {"проезд на красный", "привышение скорости", "плюнул в полицейского"})
 	};
-#define delimiter "\n------------------------------------\n"
-	print_full_base(base);
-	save(base);
+	return base;
 }
 
 void print_full_base(const std::map<std::string, std::list<std::string>>& base)
@@ -65,8 +78,61 @@ void save(const std::map<std::string, std::list<std::string>>& base)
 		{
 			fout << j << ",";
 		}
-		fout << "\b;\n";
+		fout.seekp(-1, std::ios::cur); //сдвигаем курсор на одну позицию влево.
+		fout << ";\n";
 	}
 	fout.close();
-	system("notepad base.txt");
+	system("start notepad base.txt");
+}
+
+void load(std::map<std::string, std::list<std::string>>& base)
+{
+	base.clear();
+	std::string license_plate;
+	std::list<std::string> violation_list;
+
+	std::ifstream fin("base.txt");
+
+	if (fin.is_open())
+	{
+		std::istream& stream = fin;
+		while (!fin.eof())
+		{
+			//fin.getline(license_plate.c_str(), 20, ":");
+			std::getline(fin, license_plate, ':');
+
+		}
+	}
+	else
+	{
+		std::cerr << "Error: file not found" << std::endl;
+	}
+
+	fin.close();
+}
+
+void insert(std::map<std::string, std::list<std::string>>& base)
+{
+	std::string license_plate;
+	std::string violation;
+
+	std::cout << "Введите номер автомобиля:"; //std::cin >> license_plate;
+	SetConsoleCP(1251);	std::getline(std::cin, license_plate);	SetConsoleCP(866);
+	
+	std::cout << "Введите правонарушение:  "; //std::cin >> violation;
+	SetConsoleCP(1251);	std::getline(std::cin, violation);		SetConsoleCP(866);
+	
+	if (license_plate.size() == 0 || violation.size() == 0)return;
+
+	std::map<std::string, std::list<std::string>>::iterator offender = base.find(license_plate);
+	if (offender != base.end())
+	{
+		//ЕСЛИ номер уже есть в базе, то добавляем нарушение к существующему номеру:
+		offender->second.push_back(violation);
+	}
+	else
+	{
+		//Создаем нового нарушителя в базе:
+		base.insert(std::pair<std::string, std::list<std::string>>(license_plate, { violation }));
+	}
 }
