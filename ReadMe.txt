@@ -5,6 +5,9 @@ https://github.com/okovtun/ST_PV_35
 /////////////////////////////////////////////////////////
 
 TODO:
+
+Создать ветку 'Unicode' и переделать в ней проект 'Police' с использованием wchar_t.
+
 http://cplusplus.com/reference/map/map/
 http://cplusplus.com/reference/set/set/
 http://cplusplus.com/reference/list/
