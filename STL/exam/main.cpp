@@ -56,8 +56,21 @@ public:
 		}
 		//std::cout << "CopyConstructor:" << this << std::endl;
 	}
+
+	
 	Matrix& operator=(const Matrix& other) 
 	{
+		for (int i = 0; i < rows; i++)
+		{
+			delete[] matx[i];
+		}
+		delete[] matx;
+
+		matx= new int*[rows];
+		for (int i = 0; i < rows; i++)
+		{
+			matx[i] = new int[cols] {};
+		}
 		for (int i = 0; i < rows; i++)
 		{
 			for (int j = 0; j < cols; j++)
@@ -210,7 +223,7 @@ public:
 			result = result * (*this);
 		}
 
-		return ;
+		return result;
 	} 
 	Matrix& operator*=(const Matrix& other)
 	{
