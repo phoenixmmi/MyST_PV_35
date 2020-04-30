@@ -56,6 +56,17 @@ public:
 		}
 		//std::cout << "CopyConstructor:" << this << std::endl;
 	}
+	Matrix& operator=(const Matrix& other) 
+	{
+		for (int i = 0; i < rows; i++)
+		{
+			for (int j = 0; j < cols; j++)
+			{
+				matx[i][j] = other.matx[i][j];
+			}
+		}
+		return *this;
+	}
 	~Matrix()
 	{
 		//cout << "MATRIX_Destructor" << endl;
@@ -179,9 +190,9 @@ public:
 	{
 		if (this->cols != this->rows)throw std::exception("Bad matrix size in operator ^");
 		Matrix result(rows, cols);
-		this->deg = deg;
+	
 
-		/*for (int d = 0; d < deg; d++)
+		/*for (int d = 0; d < deg-1; d++)
 		{
 			for (int i = 0; i < rows; i++)
 			{
@@ -196,10 +207,10 @@ public:
 
 		for (int i = 0; i < deg; i++)
 		{
-			result = result * *this;
+			result = result * (*this);
 		}
 
-		return *this;
+		return ;
 	} 
 	Matrix& operator*=(const Matrix& other)
 	{
