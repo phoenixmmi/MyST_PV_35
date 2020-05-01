@@ -57,6 +57,16 @@ public:
 		//std::cout << "CopyConstructor:" << this << std::endl;
 	}
 
+	Matrix(Matrix&& other) :Matrix(other.cols, other.rows)
+	{
+		this->rows = other.rows;
+		this->cols = other.cols;
+		this->matx = other.matx;
+		other.rows = NULL;
+		other.cols = NULL;
+		other.matx = nullptr;
+		std::cout << "MoveConstructor:\t" << this << std::endl;
+	}
 	
 	Matrix& operator=(const Matrix& other) 
 	{
@@ -78,6 +88,17 @@ public:
 				matx[i][j] = other.matx[i][j];
 			}
 		}
+		return *this;
+	}
+	Matrix& operator=(Matrix&& other)
+	{
+		this->rows = other.rows;
+		this->cols = other.cols;
+		this->matx = other.matx;
+		other.rows = NULL;
+		other.cols = NULL;
+		other.matx = nullptr;
+		std::cout << "FLMoveAssignment:\t" << this << std::endl;
 		return *this;
 	}
 	~Matrix()
@@ -199,10 +220,10 @@ public:
 
 		return det;
 	}
-	Matrix& operator^(const int deg)
+	Matrix operator^(const int deg)
 	{
 		if (this->cols != this->rows)throw std::exception("Bad matrix size in operator ^");
-		Matrix result(rows, cols);
+		Matrix result= *this;
 	
 
 		/*for (int d = 0; d < deg-1; d++)
@@ -218,7 +239,7 @@ public:
 
 		}*/
 
-		for (int i = 0; i < deg; i++)
+		for (int i = 1; i < deg; i++)
 		{
 			result = result * (*this);
 		}
@@ -266,11 +287,11 @@ void main()
 	*/
 
 	//умножение
-	/*
+	
 	cout << "\n-------------------------------------\n";
 	cout << "Результат умножения: " << endl;
 	Matrix mat5 = mat * mat2;
-	mat5.printMatrix();*/
+	mat5.printMatrix();
 
 	//Умножение на число
 	/*cout << "\n-------------------------------------\n";
@@ -289,12 +310,12 @@ void main()
 	*/
 
 	//возведение матрицы в степень 
-	cout << "\n-------------------------------------\n";
+	/*cout << "\n-------------------------------------\n";
 	int deg;
 	cout << "Введите степень, к которой хотите вознести матрицу: "; cin >> deg;
 	cout << "Результат вознесения в степень: " << endl;
 	Matrix mat7 = mat ^ deg;
-	mat7.printMatrix();
+	mat7.printMatrix();*/
 
 	//determinant_2x2
 	/*
