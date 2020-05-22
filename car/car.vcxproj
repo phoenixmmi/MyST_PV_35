@@ -20,11 +20,10 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{50C907DF-C0F0-447B-9FB8-E55AD315518A}</ProjectGuid>
+    <ProjectGuid>{5287C731-7CBD-4AEB-9DFB-F7F561D95BB2}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>UML</RootNamespace>
+    <RootNamespace>car</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Car</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -141,10 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Tank.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Tank.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
