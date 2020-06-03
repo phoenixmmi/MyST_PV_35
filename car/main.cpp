@@ -1,118 +1,165 @@
 #include<iostream>
 #include<thread>
 #include<conio.h>
+#include<Windows.h>
 using namespace std::chrono_literals;
-class Tank
-{
-	unsigned int volume;       //характеризует объект, показывает какой он (объкт), меняться не может.
-	double fuel_level;         //состояние объекта, которое может меняться. 
-public:
-	const unsigned int get_volume()const
-	{
-		return volume;
-	}
-	const double get_fuel_level()const
-	{
-		return fuel_level;
-	}
 
-	Tank(unsigned int volume)
-	{
-		this->volume = volume < 20 ? 20 : volume > 100 ? 100 : volume;
-		this->fuel_level = 0;
-		std::cout << "Tank ready: \t" << this << std::endl;
-	}
-	~Tank()
-	{
-		std::cout << "Tank destroyed:\t" << this << std::endl;
-	}
-
-
-	void fill(double fuel)
-	{
-		if (fuel < 0)return;
-		if (fuel_level + fuel <= volume)
-		{
-			this->fuel_level += fuel;
-		}
-		else
-		{
-			fuel_level = volume;
-		}
-	}
-
-	double give_fuel(double amount)
-	{
-		fuel_level -= amount;
-		if (fuel_level < 0)fuel_level = 0;
-		return fuel_level;
-	}
-
-	void info()const
-	{
-		std::cout << "Tank volume: " << volume << "\tliters.\t";
-		std::cout << "Fuel level: " << fuel_level << "\tliters" << std::endl;
-	}
-};
-
-class Engine
-{
-	double consumption;
-	double consumption_per_second;
-
-	bool is_started;
-public:
-	const double get_consumption()const
-	{
-		
-		return consumption;
-	}
-	const double get_consumption_per_second()const
-	{
-		return consumption_per_second;
-	}
-	void set_comsumption_per_second(double consumption_per_second)
-	{
-		//if (consumption_per_second > .0001 && consumption_per_second < .009)
-			this->consumption_per_second = consumption_per_second;
-	}
-
-	Engine(double consumption)
-	{
-		this->consumption = consumption < 3 ? 3 : consumption > 20 ? 20 : consumption;
-		this->consumption_per_second = this->consumption / 10000;
-
-		is_started = false;
-		std::cout << "Engine is ready:\t" << this << std::endl;
-	}
-	~Engine()
-	{
-		std::cout << "Engine is over:\t" << this << std::endl;
-	}
-	void start()
-	{
-		is_started = true;
-	}
-	void stop()
-	{
-		is_started = false;
-	}
-	bool started()const
-	{
-		return is_started;
-	}
-	void info()const
-	{
-		std::cout << "Engine consumption:\t" << get_consumption() << " liters per 100 km" << std::endl;
-		std::cout << "Consumption per sec:\t" << get_consumption_per_second() << " liters per second " << std::endl;
-		std::cout << "Engine is " << (is_started ? "started" : "stopperd") << ".\n";
-	}
-};
 
 class Car
 {
+	class Tank
+	{
+		unsigned int volume;       //характеризует объект, показывает какой он (объкт), меняться не может.
+		double fuel_level;         //состояние объекта, которое может меняться. 
+	public:
+		const unsigned int get_volume()const
+		{
+			return volume;
+		}
+		const double get_fuel_level()const
+		{
+			return fuel_level;
+		}
+
+		Tank(unsigned int volume)
+		{
+			this->volume = volume < 20 ? 20 : volume > 100 ? 100 : volume;
+			this->fuel_level = 0;
+			std::cout << "Tank ready: \t" << this << std::endl;
+		}
+		~Tank()
+		{
+			std::cout << "Tank destroyed:\t" << this << std::endl;
+		}
+
+
+		void fill(double fuel)
+		{
+			if (fuel < 0)return;
+			if (fuel_level + fuel <= volume)
+			{
+				this->fuel_level += fuel;
+			}
+			else
+			{
+				fuel_level = volume;
+			}
+		}
+
+		double give_fuel(double amount)
+		{
+			fuel_level -= amount;
+			if (fuel_level < 0)fuel_level = 0;
+			return fuel_level;
+		}
+
+		void info()const
+		{
+			std::cout << "Tank volume: " << volume << "\tliters.\t";
+			std::cout << "Fuel level: " << fuel_level << "\tliters" << std::endl;
+		}
+	};
+
+	class Engine
+	{
+		double consumption;
+		double consumption_per_second;
+		bool is_started;
+		int rpm;
+		int rpm_min = 1600;
+		int rpm_max = 4500;
+
+	public:
+		const double get_consumption()const
+		{
+
+			return consumption;
+		}
+		const double get_consumption_per_second()const
+		{
+			return consumption_per_second;
+		}
+		void set_comsumption_per_second(double consumption_per_second)
+		{
+			//if (consumption_per_second > .0001 && consumption_per_second < .009)
+			this->consumption_per_second = consumption_per_second;
+		}
+		int get_rpm()const
+		{
+			return rpm;
+		}
+		int get_rpm_min()const
+		{
+			return rpm_min;
+		}
+		int get_rpm_max()const
+		{
+			return rpm_max;
+		}
+
+		Engine(double consumption)
+		{
+			this->consumption = consumption < 3 ? 3 : consumption > 20 ? 20 : consumption;
+			this->consumption_per_second = this->consumption / 10000;
+
+			is_started = false;
+			rpm = 0;
+			std::cout << "Engine is ready:\t" << this << std::endl;
+		}
+		~Engine()
+		{
+			std::cout << "Engine is over:\t" << this << std::endl;
+		}
+		void start()
+		{
+			is_started = true;
+		}
+		void stop()
+		{
+			is_started = false;
+			rpm = 0;
+		}
+		bool started()const
+		{
+			return is_started;
+		}
+		void info()const
+		{
+			std::cout << "Engine consumption:\t" << get_consumption() << " liters per 100 km" << std::endl;
+			std::cout << "Consumption per sec:\t" << get_consumption_per_second() << " liters per second " << std::endl;
+			std::cout << "Engine is " << (is_started ? "started" : "stopperd") << ".\n";
+		}
+	};
+	class Transmission
+	{
+		char mode;
+	public:
+		char get_mode()
+		{
+			return mode;
+		}
+		void set_mode(char mode)
+		{
+			if (mode == '1' && mode <= '5' ||
+				mode == 'n' || mode == 'N' ||
+				mode == 'p' || mode == 'P' ||
+				mode == 'r' || mode == 'R'
+				)
+				this->mode = mode;
+		}
+		Transmission()
+		{
+			mode = '1';
+		}
+		~Transmission()
+		{
+
+		}
+	};
+
 	Engine engine;
 	Tank tank;
+	Transmission transmisson;
 	bool driver_inside;
 	unsigned int speed;
 	unsigned int max_speed;
@@ -186,16 +233,30 @@ public:
 		while (driver_inside)
 		{
 			system("CLS");
-			for (int i = 0; i < speed / 2; i++)
+			HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+			std::cout << "RPM:\t";
+			for (int i = 0; i < engine.get_rpm() / 100; i++)
 			{
-				if (i > 140)break;
+				if (i > 110)break;
+				SetConsoleTextAttribute(hConsole, i >= 80 ? 12 : 7);
 				std::cout << "|";
 			}
+			std::cout << std::endl;
+			std::cout << "Speed:\t";
+			for (int i = 0; i < speed / 2; i++)
+			{
+				if (i > 110)break;
+				SetConsoleTextAttribute(hConsole, i >= 100 ? 12 : i >=50 ? 10 :7);
+				std::cout << "|";
+			}
+			SetConsoleTextAttribute(hConsole, 7);
 			std::cout << std::endl;
 
 			std::cout << "Engine is " << (engine.started() ? "started." : "stopped.") << std::endl;
 			std::cout << "Fuel:\t" << tank.get_fuel_level() << " leters.\t" << std::endl;
+			SetConsoleTextAttribute(hConsole, 12);
 			if (tank.get_fuel_level() < 5) std::cout << "LOW FUEL" << std::endl;
+			SetConsoleTextAttribute(hConsole, 7);
 			std::cout << speed << " km/h.\n";
 
 			std::cout << "Consumption per second: " << engine.get_consumption_per_second() << std::endl;
@@ -210,6 +271,7 @@ public:
 		while (engine.started() && tank.give_fuel(engine.get_consumption_per_second()))
 		{
 			change_consumption();
+			
 			std::this_thread::sleep_for(1s);
 		}
 		engine.stop();
@@ -259,7 +321,7 @@ public:
 					if (speed > max_speed)speed = max_speed;
 					std::this_thread::sleep_for(1s);
 				}
-					break;
+				break;
 			case 'S':
 			case 's':
 				if (speed > 20)speed -= 20;
@@ -275,13 +337,13 @@ public:
 			else if (speed == 0 && control_panel.wheeling_thread && control_panel.wheeling_thread->joinable())
 			{
 				control_panel.wheeling_thread->join();
-				control_panel.wheeling_thread=nullptr;
+				control_panel.wheeling_thread = nullptr;
 			}
 			change_consumption();
 		} while (key != 27);
 	}
 	//////////////////////////////DRIVING/////////////////////////////
-	
+
 	void free_wheeling()
 	{
 		using namespace std::chrono_literals;
@@ -302,7 +364,7 @@ public:
 			else if (speed > 200 && speed <= 250)engine.set_comsumption_per_second(.03);
 			else engine.set_comsumption_per_second(engine.get_consumption() / 10000);
 		}
-		else 
+		else
 		{
 			engine.set_comsumption_per_second(0);
 		}
